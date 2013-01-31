@@ -8,13 +8,17 @@ module FPM
       def initialize(url, options = nil)
         options ||= {}
 
-        @url = URI(url.to_s)
+        @url = url && URI(url.to_s)
         @provider = options[:with]
         @options = options
       end
 
       def provider?
         !!@provider
+      end
+
+      def virtual?
+        @url.nil?
       end
 
       def local?

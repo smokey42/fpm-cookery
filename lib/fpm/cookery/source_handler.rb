@@ -4,6 +4,7 @@ require 'fpm/cookery/source_handler/svn'
 require 'fpm/cookery/source_handler/git'
 require 'fpm/cookery/source_handler/hg'
 require 'fpm/cookery/source_handler/local_path'
+require 'fpm/cookery/source_handler/virtual'
 require 'fpm/cookery/log'
 
 module FPM
@@ -11,6 +12,7 @@ module FPM
     class SourceHandler
       DEFAULT_HANDLER = :curl
       LOCAL_HANDLER = :local_path
+      VIRTUAL_HANDLER = :virtual_source
 
       extend Forwardable
       def_delegators :@handler, :fetch, :extract, :local_path, :checksum?
@@ -22,7 +24,9 @@ module FPM
         @cachedir = cachedir
         @builddir = builddir
 
-        if @source.provider?
+        if @source.virtual?
+          @source_provider = VIRTUAL_HANDLER
+        elsif @source.provider?
           @source_provider = @source.provider
         elsif @source.local?
           @source_provider = LOCAL_HANDLER
