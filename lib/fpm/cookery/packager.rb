@@ -55,7 +55,7 @@ module FPM
           Log.info "Fetching source: #{source.source_url}"
           source.fetch
 
-          if source.checksum? && !source.virtual?
+          if source.checksum?
             SourceIntegrityCheck.new(recipe).tap do |check|
               if check.checksum_missing?
                 Log.warn 'Recipe does not provide a checksum. (sha256, sha1 or md5)'

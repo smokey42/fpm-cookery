@@ -11,6 +11,10 @@ module FPM
 
         def fetch
         end
+
+        def checksum
+          false
+        end
       end
     end
   end
